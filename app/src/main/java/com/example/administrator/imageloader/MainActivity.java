@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.administrator.imageloader.diskcache.cachemanager.DiskCacheManager;
 import com.example.administrator.imageloader.sdk.ImageLoader;
 
 public class MainActivity extends AppCompatActivity {

@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.administrator.imageloader.diskcache.cachemanager.DiskCacheManager;
+
+import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
@@ -59,12 +62,11 @@ public class ImageLoader {
         if (bitmap != null) {
             if (target instanceof ImageView) {
                 ((ImageView) target).setImageBitmap(bitmap);
-                Log.d(Tag, "get bitmap from cache,url:"+url);
             }
         } else {
             //get image bitmap from network
             ThreadPoolManager.getInstance().addExecuteTask(new WorkRunable(target, url, mHander));
-            Log.d(Tag, "get bitmap from network,url:" +url);
+            Log.d(Tag, "get bitmap from network,url:" + url);
         }
     }
 
@@ -75,10 +77,17 @@ public class ImageLoader {
         }
     }
 
+    // memory  disk
     public Bitmap getBitmapFromCache(String url) {
         SoftReference<Bitmap> reference = imgCache.get(url);
         if (reference != null && reference.get() != null) {
+            Log.d(Tag, "get bitmap from memory cache,url:" + url);
             return reference.get();
+        }
+        Bitmap bitmap = DiskCacheManager.getInstance().getAsBitmap(url);
+        if (bitmap != null) {
+            Log.d(Tag, "get bitmap from disk cache,url:" + url);
+            return bitmap;
         }
         return null;
     }

@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 
+import com.example.administrator.imageloader.diskcache.cachemanager.DiskCacheManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -31,7 +33,10 @@ public class RequstConnection {
             InputStream inputStream = urlConnection.getInputStream();
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
             parms.setBitmap(bitmap);
+            //set bitmap to memory
             ImageLoader.getInstance().setBitmapCache(parms.getUrl(), bitmap);
+            //set bitmap to disk
+            DiskCacheManager.getInstance().put(parms.getUrl(),bitmap);
             Message message = mHandler.obtainMessage();
             message.what = GlobalDefine.HANDLER_MSG_SUCCESS;
             message.obj = parms;
