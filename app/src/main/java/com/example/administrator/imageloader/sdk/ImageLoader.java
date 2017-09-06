@@ -84,11 +84,6 @@ public class ImageLoader {
             Log.d(Tag, "get bitmap from memory cache,url:" + url);
             return reference.get();
         }
-        Bitmap bitmap = DiskCacheManager.getInstance().getAsBitmap(url);
-        if (bitmap != null) {
-            Log.d(Tag, "get bitmap from disk cache,url:" + url);
-            return bitmap;
-        }
         return null;
     }
 
