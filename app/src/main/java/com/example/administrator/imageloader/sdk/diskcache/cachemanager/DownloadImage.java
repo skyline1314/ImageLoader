@@ -1,4 +1,4 @@
-package com.example.administrator.imageloader.diskcache.cachemanager;
+package com.example.administrator.imageloader.sdk.diskcache.cachemanager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

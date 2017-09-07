@@ -1,4 +1,4 @@
-package com.example.administrator.imageloader.diskcache.cachemanager;
+package com.example.administrator.imageloader.sdk.diskcache.cachemanager;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -9,9 +9,9 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.administrator.imageloader.diskcache.io.DiskLruCache;
-import com.example.administrator.imageloader.diskcache.utils.BitmapUtil;
-import com.example.administrator.imageloader.diskcache.utils.StreamUtil;
+import com.example.administrator.imageloader.sdk.diskcache.io.DiskLruCache;
+import com.example.administrator.imageloader.sdk.diskcache.utils.BitmapUtil;
+import com.example.administrator.imageloader.sdk.diskcache.utils.StreamUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;

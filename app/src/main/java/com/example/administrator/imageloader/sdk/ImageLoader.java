@@ -1,15 +1,16 @@
 package com.example.administrator.imageloader.sdk;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.administrator.imageloader.diskcache.cachemanager.DiskCacheManager;
+import com.example.administrator.imageloader.sdk.diskcache.cachemanager.DiskCacheManager;
 
-import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
@@ -18,15 +19,17 @@ import java.util.HashMap;
  */
 public class ImageLoader {
     private static ImageLoader instance;
-    private static HashMap<String, SoftReference<Bitmap>> imgCache = new HashMap<>();
+    private HashMap<String, SoftReference<Bitmap>> imgCache = new HashMap<>();
     private String Tag = "ImageLoader";
-
-    private static Handler mHander = new Handler() {
+    private Context context;
+    private Handler mHander = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == GlobalDefine.HANDLER_MSG_SUCCESS) {
                 ImageParms params = (ImageParms) msg.obj;
                 params.setBitmapToView();
+                cacheMemoryBitmap(params);
+                cacheDiskBitmap(params);
             }
             super.handleMessage(msg);
         }
@@ -37,12 +40,31 @@ public class ImageLoader {
 
     }
 
+    public void init(Context context) {
+        this.context = context;
+    }
+
+
     //singleton
     public static ImageLoader getInstance() {
         if (instance == null) {
             instance = new ImageLoader();
         }
         return instance;
+    }
+
+    //set bitmap to view by local resource
+    public void with(final View target, int resId) {
+        Bitmap bitmap = getBitmapFromCache(resId + "");
+        if (bitmap == null) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
+            ImageParms parms = new ImageParms(target, resId + "", bitmap);
+            cacheMemoryBitmap(parms);
+        }
+
+        if (target instanceof ImageView) {
+            ((ImageView) target).setImageBitmap(bitmap);
+        }
     }
 
     public void with(final View target, final String url) {
@@ -52,7 +74,6 @@ public class ImageLoader {
     //set bitmap to target view
     public void with(final View target, final String url, int defultImgId) {
         Bitmap bitmap = getBitmapFromCache(url);
-
         if (defultImgId != 0) {
             if (target instanceof ImageView) {
                 ((ImageView) target).setImageResource(defultImgId);
@@ -87,4 +108,14 @@ public class ImageLoader {
         return null;
     }
 
+
+    private void cacheMemoryBitmap(ImageParms parms) {
+        //set bitmap to memory
+        setBitmapCache(parms.getUrl(), parms.getBitmap());
+    }
+
+    private void cacheDiskBitmap(ImageParms parms) {
+        //set bitmap to disk
+        DiskCacheManager.getInstance().put(parms.getUrl(), parms.getBitmap());
+    }
 }

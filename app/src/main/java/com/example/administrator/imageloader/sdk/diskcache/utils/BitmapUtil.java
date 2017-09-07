@@ -1,4 +1,4 @@
-package com.example.administrator.imageloader.diskcache.utils;
+package com.example.administrator.imageloader.sdk.diskcache.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

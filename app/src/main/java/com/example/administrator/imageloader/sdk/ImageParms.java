@@ -18,6 +18,11 @@ public class ImageParms {
         this.url = url;
     }
 
+    public ImageParms(View target, String url, Bitmap bitmap) {
+        this(target, url);
+        this.bitmap = bitmap;
+    }
+
     public View getTarget() {
         return target;
     }

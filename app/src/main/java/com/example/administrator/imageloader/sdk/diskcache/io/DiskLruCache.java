@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.administrator.imageloader.diskcache.io;
+package com.example.administrator.imageloader.sdk.diskcache.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
